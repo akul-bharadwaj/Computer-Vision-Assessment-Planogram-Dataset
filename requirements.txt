@@ -1,6 +1,7 @@
 kagglehub
 opencv-python
-yolov5
+ultralytics
+huggingface_hub
 numpy
 pandas
 gradio
