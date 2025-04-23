@@ -2,5 +2,6 @@ kagglehub
 opencv-python
 yolov5
 numpy
+pandas
 gradio
 pillow

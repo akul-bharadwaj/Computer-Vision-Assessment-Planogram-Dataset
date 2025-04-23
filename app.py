@@ -1,6 +1,7 @@
 import gradio as gr
 import cv2
 import numpy as np
+import pandas as pd
 import yolov5
 import os
 
@@ -59,24 +60,26 @@ def analyze_image(img):
     # Convert for Gradio display
     img_out = cv2.cvtColor(preprocessed, cv2.COLOR_BGR2RGB)
 
-    score_breakdown = (
-    f"Gap Score (50%): {gap_score}%\n"
-    f"Image Quality (30%): {quality}%\n"
-    f"Gap Density (20%): {gap_density_score}%\n"
-    f"Final Compliance Score: {compliance_score}%"
-)
+    score_breakdown = pd.DataFrame([
+        ["Gap Score (50%)", f"{gap_score}%"],
+        ["Image Quality (30%)", f"{quality}%"],
+        ["Gap Density (20%)", f"{gap_density_score}%"],
+    ], columns=["Component", "Score"])
 
-    return img_out, score_breakdown
+    final_score_text = f"{compliance_score}%"
+
+    return img_out, final_score_text, score_breakdown
 
 # Image options from test folder
 image_dir = "datasets/shelf_planograms/DATASET_Planogram/test/images"
 def get_image_list():
-    return [f for f in os.listdir(image_dir) if f.lower().endswith(('.jpg', '.jpeg', '.png'))]
+    return [f for f in os.listdir(image_dir) if f.lower().endswith(('.jpg'))]
 
 dropdown = gr.Dropdown(choices=["Select"] + get_image_list(), label="Select Shelf Image from Test Set")
 upload = gr.Image(type="pil", label="Or Upload an Image")
 output_img = gr.Image(label="Annotated Output")
-output_json = gr.Textbox(label="Score Breakdown")
+output_score = gr.Textbox(label="Compliance Score")
+output_json = gr.Dataframe(headers=["Component", "Score"], label="Score Breakdown by Component")
 
 def image_selector(dropdown_image, uploaded_image):
     if uploaded_image is not None:
@@ -88,10 +91,10 @@ def image_selector(dropdown_image, uploaded_image):
 interface = gr.Interface(
     fn=lambda dropdown, upload: analyze_image(image_selector(dropdown, upload)),
     inputs=[dropdown, upload],
-    outputs=[output_img, output_json],
-    title="Shelf Compliance Analyzer",
-    description="Detects shelf gaps, scores image quality, calculates gap density, and computes a final compliance score."
+    outputs=[output_img, output_score, output_json],
+    title="Retail Shelf Gap & Compliance Analyzer",
+    description="<div style='text-align:center'>Detects shelf gaps, scores image quality, calculates gap density, and computes a final compliance score.</div>"
 )
 
 if __name__ == "__main__":
-    interface.launch(server_name="127.0.0.1", server_port=7860)
+    interface.launch()
