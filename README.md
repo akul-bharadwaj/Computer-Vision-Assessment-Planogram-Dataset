@@ -4,7 +4,7 @@
 This project is for a Gradio based application that analyzes retail shelf images and scores them based on compliance.
 
 ## Dataset
-![Shelf Images for Planograms](https://www.kaggle.com/datasets/aamiraliansari/shelf-images-for-planograms)
+[Shelf Images for Planograms](https://www.kaggle.com/datasets/aamiraliansari/shelf-images-for-planograms)
 
 ## Gradio App
 You can access the Gradio application for analyzing retail shelf gaps and compliance at the following link:
