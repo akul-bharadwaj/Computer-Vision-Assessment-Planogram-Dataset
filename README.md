@@ -28,7 +28,7 @@ You can find the fine-tuned YOLOv8 model for detecting retail shelf gaps at the 
 │   ├── test/
 │   │   ├── images/            # Test images to evaluate final model
 │   │   ├── labels/            # Ground truth labels for test images (if available)
-│   ├── data.yaml              # Dataset configuration file for YOLOv5
+│   ├── data.yaml              # Dataset configuration file for YOLOv8
 │
 ├── runs/detect/train/
 │   ├── weights/
