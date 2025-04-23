@@ -1,0 +1,6 @@
+
+train: D:/Datadivr/datasets/shelf_planograms/DATASET_Planogram/train/images
+val:  D:/Datadivr/datasets/shelf_planograms/DATASET_Planogram/valid/images
+
+nc: 1
+names: ['void']

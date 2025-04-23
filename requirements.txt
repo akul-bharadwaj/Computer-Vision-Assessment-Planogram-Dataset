@@ -1,0 +1,6 @@
+kagglehub
+opencv-python
+yolov5
+numpy
+gradio
+pillow
