@@ -2,11 +2,15 @@ import gradio as gr
 import cv2
 import numpy as np
 import pandas as pd
-import yolov5
 import os
 
+
 # Loading the fine-tuned YOLOv5 model
-model = yolov5.load('runs/train/exp4/weights/best.pt')
+from huggingface_hub import hf_hub_download
+from ultralytics import YOLO
+
+model_path = hf_hub_download(repo_id="akul-29/Retail-Shelf-Gap-Detection_Model", filename="best.pt")
+model = YOLO(model_path)
 
 # Preprocessing to improve detection (resize, denoise)
 def preprocess_image(img):
@@ -16,9 +20,8 @@ def preprocess_image(img):
 
 # Gap detection using YOLO
 def detect_gaps(image):
-    results = model(image)
-    preds = results.pred[0]
-    gap_boxes = [list(map(int, box[:4])) for box in preds]
+    results = model(image)[0]
+    gap_boxes = [list(map(int, box)) for box in results.boxes.xyxy.cpu().numpy()]
     return gap_boxes, results
 
 # Image quality using histogram contrast (darkness) and Laplacian variance (blurriness)
@@ -54,8 +57,16 @@ def analyze_image(img):
     compliance_score = compute_compliance_score(gap_score, quality, gap_density_score)
 
     # Draw bounding boxes
-    for x1, y1, x2, y2 in gap_boxes:
+    class_names = {0: "void"}
+
+    for box, conf, cls in zip(results.boxes.xyxy.cpu().numpy(),
+                          results.boxes.conf.cpu().numpy(),
+                          results.boxes.cls.cpu().numpy()):
+        x1, y1, x2, y2 = map(int, box[:4])
+        label = f"{class_names.get(int(cls), str(int(cls)))}: {conf:.2f}"
         cv2.rectangle(preprocessed, (x1, y1), (x2, y2), (0, 0, 255), 2)
+        cv2.putText(preprocessed, label, (x1, y1 - 10),
+                cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 1)
 
     # Convert for Gradio display
     img_out = cv2.cvtColor(preprocessed, cv2.COLOR_BGR2RGB)
@@ -93,7 +104,7 @@ interface = gr.Interface(
     inputs=[dropdown, upload],
     outputs=[output_img, output_score, output_json],
     title="Retail Shelf Gap & Compliance Analyzer",
-    description="<div style='text-align:center'>Detects shelf gaps, scores image quality, calculates gap density, and computes a final compliance score.</div>"
+    description="Detects shelf gaps, scores image quality, calculates gap density, and computes a final compliance score."
 )
 
 if __name__ == "__main__":
