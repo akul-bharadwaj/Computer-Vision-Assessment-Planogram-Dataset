@@ -8,7 +8,10 @@ You can access the Gradio application for analyzing retail shelf gaps and compli
 
 [Retail Shelf Gap and Compliance Analyzer](https://huggingface.co/spaces/akul-29/Retail-Shelf-Gap-and-Compliance-Analyzer)
 
-## Fine-tuned YOLOv8 model for retail shelf gaps
+![image](https://github.com/user-attachments/assets/457d0c8c-c856-4bb5-abf4-6911fe2ee9e9)
+
+
+## Fine-tuned YOLOv8 model for Retail Shelf Gaps
 You can find the fine-tuned YOLOv8 model for detecting retail shelf gaps at the following link:
 
 [Retail Shelf Gap Detection Model](https://huggingface.co/akul-29/Retail-Shelf-Gap-Detection_Model)
