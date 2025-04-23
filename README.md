@@ -3,13 +3,15 @@
 ## Project Overview
 This project is for a Gradio based application that analyzes retail shelf images and scores them based on compliance.
 
+## Dataset
+![Shelf Images for Planograms](https://www.kaggle.com/datasets/aamiraliansari/shelf-images-for-planograms)
+
 ## Gradio App
 You can access the Gradio application for analyzing retail shelf gaps and compliance at the following link:
 
 [Retail Shelf Gap and Compliance Analyzer](https://huggingface.co/spaces/akul-29/Retail-Shelf-Gap-and-Compliance-Analyzer)
 
 ![image](https://github.com/user-attachments/assets/457d0c8c-c856-4bb5-abf4-6911fe2ee9e9)
-
 
 ## Fine-tuned YOLOv8 model for Retail Shelf Gaps
 You can find the fine-tuned YOLOv8 model for detecting retail shelf gaps at the following link:
